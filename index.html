@@ -8,13 +8,21 @@
 </head>
 <body>
     <input type="text" id="input" />
-    <button id="button">Gönder</button>
+    <button id="button">Gönder</button><br>
+    <div id="veriler">
+
+    </div>
     <script src="socket.io.js"></script>
     <script src="jquery.js"></script>
     <script>
     const socket = io('http://localhost:3000');
     $("button").on('click', () => {
         socket.emit('veri', $("input").val());
+        $("#veriler").append('<span>' + $("input").val() + '</span><br/>');
+    });
+
+    socket.on('veri', data => {
+        $("#veriler").append('<span>' + data + '</span><br/>');
     });
     </script>
 </body>
