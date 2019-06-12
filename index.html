@@ -7,11 +7,15 @@
     <title>Socket IO Client</title>
 </head>
 <body>
-    
+    <input type="text" id="input" />
+    <button id="button">Gönder</button>
     <script src="socket.io.js"></script>
+    <script src="jquery.js"></script>
     <script>
     const socket = io('http://localhost:3000');
-        
+    $("button").on('click', () => {
+        socket.emit('veri', $("input").val());
+    });
     </script>
 </body>
 </html>
