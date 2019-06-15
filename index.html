@@ -7,22 +7,30 @@
     <title>Socket IO Client</title>
 </head>
 <body>
-    <input type="text" id="input" />
-    <button id="button">Gönder</button><br>
-    <div id="veriler">
-
-    </div>
+    <ul id="liste">
+    
+    </ul>
     <script src="socket.io.js"></script>
     <script src="jquery.js"></script>
     <script>
     const socket = io('http://localhost:3000');
-    $("button").on('click', () => {
-        socket.emit('veri', $("input").val());
-        $("#veriler").append('<span>' + $("input").val() + '</span><br/>');
+    const isim = prompt("İsminizi giriniz: ");
+    if (isim){
+        socket.emit('name', isim);
+    }
+
+    socket.on('users', users => {
+        users.map(user => {
+            $('#liste').append("<li id='" + user + "'>" + user + "</li>");
+        });
     });
 
-    socket.on('veri', data => {
-        $("#veriler").append('<span>' + data + '</span><br/>');
+    socket.on('addUser', user => {
+        $('#liste').append("<li id='" + user + "'>" + user + "</li>");
+    });
+
+    socket.on('deleteUser', user => {
+        $('#' + user).remove();
     });
     </script>
 </body>
