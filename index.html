@@ -7,9 +7,10 @@
     <title>Socket IO Client</title>
 </head>
 <body>
-    <ul id="liste">
-    
-    </ul>
+    <select id="liste">
+        
+    </select><br>
+    <input type="text" id="message"><button id="send">Gönder</button>
     <script src="socket.io.js"></script>
     <script src="jquery.js"></script>
     <script>
@@ -19,18 +20,29 @@
         socket.emit('name', isim);
     }
 
+    $('#send').click(() => {
+        const message = $('#message').val();
+        const to = $('#liste').val();
+        const data = { message, to };
+        socket.emit('pm', data);
+    });
+
+    socket.on('pm', data => {
+        alert(data.message);
+    });
+
     socket.on('users', users => {
         users.map(user => {
-            $('#liste').append("<li id='" + user + "'>" + user + "</li>");
+            $('#liste').append("<option id='" + user.id + "' value='" + user.id + "'>" + user.username + "</option>");
         });
     });
 
     socket.on('addUser', user => {
-        $('#liste').append("<li id='" + user + "'>" + user + "</li>");
+        $('#liste').append("<option id='" + user.id + "' value='" + user.id + "'>" + user.username + "</option>");
     });
 
     socket.on('deleteUser', user => {
-        $('#' + user).remove();
+        $('#' + user.id).remove();
     });
     </script>
 </body>
